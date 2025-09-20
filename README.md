@@ -1,4 +1,4 @@
-# Prerequisites for the 15-Day Tekton Expertise Plan
+# 15-Day Tekton Expertise Plan
 
 Welcome to the 15-day journey to becoming a Tekton expert! This guide will ensure you have all the necessary knowledge, tools, and configurations in place before you begin. A little preparation now will allow you to focus entirely on Tekton's concepts and practices each day.
 
