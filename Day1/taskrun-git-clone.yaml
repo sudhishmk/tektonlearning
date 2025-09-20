@@ -1,0 +1,17 @@
+# taskrun-git-clone.yaml
+apiVersion: tekton.dev/v1beta1
+kind: TaskRun
+metadata:
+  name: git-clone-run-1
+spec:
+  taskRef:
+    name: git-clone # Reference the Task we created
+  params:
+    - name: repoUrl
+      value: "https://github.com/GoogleCloudPlatform/microservices-demo.git"
+    - name: revision
+      value: "main"
+  workspaces:
+    - name: output
+      persistentVolumeClaim:
+        claimName: tekton-source-pvc # Bind the workspace to our PVC
