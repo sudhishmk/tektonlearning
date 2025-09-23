@@ -1,0 +1,33 @@
+# week1/day4/pipeline.yaml
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: git-clone-and-list-pipeline
+spec:
+  description: "This pipeline clones a repo and then lists its contents."
+  workspaces:
+    - name: shared-data
+      description: The workspace that will be shared between tasks.
+  params:
+    - name: repo-url
+      type: string
+      description: The git repo URL to clone.
+
+  tasks:
+    - name: fetch-from-git
+      taskRef:
+        name: git-clone # Assumes the Task from Day 3 is on the cluster
+      workspaces:
+        - name: source
+          workspace: shared-data
+      params:
+        - name: repo-url
+          value: $(params.repo-url)
+
+    - name: list-cloned-files
+      runAfter: ["fetch-from-git"] # <-- Ensures this runs second
+      taskRef:
+        name: list-files-task
+      workspaces:
+        - name: directory
+          workspace: shared-data

@@ -1,0 +1,15 @@
+# week1/day3/taskrun.yaml
+apiVersion: tekton.dev/v1beta1
+kind: TaskRun
+metadata:
+  name: clone-our-learning-repo
+spec:
+  taskRef:
+    name: git-clone
+  params:
+    - name: repo-url
+      value: https://github.com/sudhishmk/tekton-learning.git
+  workspaces:
+    - name: source
+      persistentVolumeClaim:
+        claimName: tekton-shared-workspace # Re-using the PVC from Day 2

@@ -1,0 +1,17 @@
+# week1/day4/list-files-task.yaml
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: list-files-task
+spec:
+  description: "This task lists all files in a workspace recursively."
+  workspaces:
+    - name: directory
+      description: The directory to inspect.
+  steps:
+    - name: list
+      image: ubuntu
+      script: |
+        #!/bin/bash
+        echo "Listing all files in the workspace..."
+        ls -R $(workspaces.directory.path)

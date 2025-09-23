@@ -1,0 +1,26 @@
+# week1/day3/task.yaml
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: git-clone
+spec:
+  description: "This task clones a git repository into a workspace."
+  workspaces:
+    - name: source
+      description: The workspace where the source code will be cloned.
+  params:
+    - name: repo-url
+      type: string
+      description: The URL of the git repository to clone.
+  steps:
+    - name: clone
+      image: alpine/git # A small image with git installed
+      script: |
+        #!/bin/sh
+        set -ex
+
+        echo "Cloning repository $(params.repo-url)..."
+        git clone $(params.repo-url) $(workspaces.source.path)
+
+        echo "Contents of the workspace:"
+        ls -la $(workspaces.source.path)
