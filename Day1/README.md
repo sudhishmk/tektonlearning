@@ -31,6 +31,18 @@ spec:
         #!/bin/bash
         echo "Hello, Tekton! This is the first step."
 ```
+And here is the TaskRun that executes the Task defined above.
+
+**`taskrun.yaml`**
+```yaml
+apiVersion: tekton.dev/v1beta1
+kind: TaskRun
+metadata:
+  name: hello-world-task-run-1
+spec:
+  taskRef:
+    name: hello-world-task
+```
 
 ---
 ## 🤔 Daily Self-Assessment
