@@ -39,5 +39,5 @@ Complete these steps once before you begin Day 1. This will prepare your local K
 
 **1. Start Your Local Cluster**
 **Set up a local cluster**: If you don't have one, install [Minikube](https://minikube.sigs.k8s.io/docs/start/) or [Kind](https://kind.sigs.k8s.io/docs/user/quick-start/). Start your cluster.
-    * For Minikube: `minikube start --memory 4g --cpus 2`
-    * For Kind: `kind create cluster`
+* For Minikube: `minikube start --memory 4g --cpus 2`
+* For Kind: `kind create cluster`
