@@ -50,7 +50,7 @@ Today, you'll set up your environment and run your first `Task`. This will form 
 
 2.  **Install Tekton Pipelines**: Apply the latest release from the official docs.
     ```bash
-    kubectl apply --filename [https://storage.googleapis.com/tekton-releases/pipeline/latest/release.yaml](https://storage.googleapis.com/tekton-releases/pipeline/latest/release.yaml)
+    kubectl apply --filename https://storage.googleapis.com/tekton-releases/pipeline/latest/release.yaml
     ```
     Verify the installation by checking for pods in the `tekton-pipelines` namespace: `kubectl get pods --namespace tekton-pipelines`. Wait for them to be `Running`.
 
