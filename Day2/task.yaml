@@ -1,0 +1,25 @@
+# week1/day2/task.yaml
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: create-and-read-file
+spec:
+  workspaces:
+    - name: output
+      description: The workspace where a file will be written and then read.
+  steps:
+    - name: create-file
+      image: ubuntu
+      script: |
+        #!/bin/bash
+        echo "Hello from Step 1!" > $(workspaces.output.path)/my-file.txt
+        echo "File created. Contents of workspace:"
+        ls -l $(workspaces.output.path)
+
+    - name: read-file
+      image: ubuntu
+      script: |
+        #!/bin/bash
+        echo "---"
+        echo "Reading file in Step 2..."
+        cat $(workspaces.output.path)/my-file.txt

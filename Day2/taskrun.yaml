@@ -1,0 +1,12 @@
+# week1/day2/taskrun.yaml
+apiVersion: tekton.dev/v1beta1
+kind: TaskRun
+metadata:
+  name: create-and-read-file-run
+spec:
+  taskRef:
+    name: create-and-read-file
+  workspaces:
+    - name: output
+      persistentVolumeClaim:
+        claimName: tekton-shared-workspace
