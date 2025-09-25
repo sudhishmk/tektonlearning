@@ -1,0 +1,11 @@
+# week1/day2/pvc.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: tekton-shared-workspace-3
+spec:
+  accessModes:
+    - ReadWriteOnce # This PVC can be mounted by one node at a time
+  resources:
+    requests:
+      storage: 1Gi

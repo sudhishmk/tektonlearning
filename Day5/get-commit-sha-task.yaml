@@ -1,0 +1,23 @@
+# week1/day5/get-commit-sha-task.yaml
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: get-commit-sha
+spec:
+  description: This task gets the commit SHA from a git repository in a workspace.
+  workspaces:
+    - name: source
+      description: The workspace containing the git repository.
+  results:
+    - name: commit-sha
+      description: The exact commit SHA that was checked out.
+  steps:
+    - name: get-sha
+      image: alpine/git
+      script: |
+        #!/bin/sh
+        set -e
+        cd $(workspaces.source.path)
+        # Use 'echo -n' to avoid the trailing newline that Tekton results dislike
+        echo -n $(git rev-parse HEAD) > $(results.commit-sha.path)
+        echo "Found SHA: $(cat $(results.commit-sha.path))"

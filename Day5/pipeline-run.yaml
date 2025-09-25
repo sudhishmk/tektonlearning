@@ -1,0 +1,15 @@
+# week1/day5/pipelinerun.yaml
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  name: report-sha-pipeline-run-2
+spec:
+  pipelineRef:
+    name: git-clone-and-report-sha
+  workspaces:
+    - name: shared-data
+      persistentVolumeClaim:
+        claimName: tekton-shared-workspace-3
+  params:
+    - name: repo-url
+      value: https://github.com/sudhishmk/tektonlearning.git # <-- IMPORTANT: CHANGE THIS

@@ -1,0 +1,37 @@
+# week1/day5/pipeline.yaml
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: git-clone-and-report-sha
+spec:
+  workspaces:
+    - name: shared-data
+  params:
+    - name: repo-url
+      type: string
+  tasks:
+    - name: fetch-repo
+      taskRef:
+        name: git-clone
+      workspaces:
+        - name: source
+          workspace: shared-data
+      params:
+        - name: repo-url
+          value: $(params.repo-url)
+
+    - name: find-commit-id
+      runAfter: ["fetch-repo"]
+      taskRef:
+        name: get-commit-sha
+      workspaces:
+        - name: source
+          workspace: shared-data
+
+    - name: report-commit-id
+      runAfter: ["find-commit-id"]
+      taskRef:
+        name: echo-message
+      params:
+        - name: message
+          value: "Cloned repo and found commit: $(tasks.find-commit-id.results.commit-sha)"

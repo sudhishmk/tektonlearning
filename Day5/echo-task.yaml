@@ -1,0 +1,14 @@
+# week1/day5/echo-task.yaml
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: echo-message
+spec:
+  params:
+    - name: message
+      type: string
+      default: "No message provided."
+  steps:
+    - name: echo
+      image: ubuntu
+      script: 'echo "Message received: $(params.message)"'
