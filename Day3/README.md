@@ -64,7 +64,8 @@ Today, we'll create a reusable `git-clone` task and use it to clone the `tekton-
     ```
 
 2.   **Create the PVC**: Create a file named `week1/day3/pvc.yaml` with this content. This requests 1Gi of storage from your cluster.
-    ```yaml
+
+ ```yaml
     # week1/day2/pvc.yaml
     apiVersion: v1
     kind: PersistentVolumeClaim
@@ -76,7 +77,7 @@ Today, we'll create a reusable `git-clone` task and use it to clone the `tekton-
       resources:
         requests:
           storage: 1Gi
-    ```
+```
 
 3. **Create the `git-clone` Task**: Create a file at `week1/day3/task.yaml`. This `Task` will be a generic. It requires a `workspace` to clone into and takes a `repo-url` parameter.
     ```yaml
