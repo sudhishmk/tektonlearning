@@ -1,0 +1,12 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: hello-world-task
+spec:
+  description: "A simple task that prints a hello message."
+  steps:
+    - name: echo-hello
+      image: ubuntu
+      script: |
+        #!/bin/bash
+        echo "Hello, Tekton! This is the first step."
