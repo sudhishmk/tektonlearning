@@ -108,7 +108,7 @@ Today, we'll create a reusable `git-clone` task and use it to clone the `tekton-
             ls -la $(workspaces.source.path)
     ```
 
-3.  **Create the TaskRun**: Now, create `week1/day3/taskrun.yaml`. This `TaskRun` will use the generic `git-clone` `Task` but provide *specific* values for your repository. It binds the `source` workspace to the PVC you created on Day 2.
+4.  **Create the TaskRun**: Now, create `week1/day3/taskrun.yaml`. This `TaskRun` will use the generic `git-clone` `Task` but provide *specific* values for your repository. It binds the `source` workspace to the PVC you created on Day 2.
     ```yaml
     # week1/day3/taskrun.yaml
     apiVersion: tekton.dev/v1beta1
@@ -128,7 +128,7 @@ Today, we'll create a reusable `git-clone` task and use it to clone the `tekton-
     ```
     **Remember to replace `YOUR_USERNAME` with your actual GitHub username.**
 
-4.  **Apply and Run**:
+5.  **Apply and Run**:
     ```bash
     # Create a new pvc
     # kubectl apply -f week1/day3/pvc.yaml
@@ -140,12 +140,12 @@ Today, we'll create a reusable `git-clone` task and use it to clone the `tekton-
     kubectl apply -f week1/day3/taskrun.yaml
     ```
 
-5.  **Check the Logs**:
+6.  **Check the Logs**:
     * Find the Pod for the new `TaskRun`: `kubectl get pods | grep clone-our-learning-repo`
     * Check its logs: `kubectl logs <pod-name-from-previous-command>`
     * You should see the output of the `git clone` command and the `ls -la` command, showing the files from your repository!
 
-6.  **Commit Your Work**:
+7.  **Commit Your Work**:
     ```bash
     git add .
     git commit -m "Day 3: Creating a reusable git-clone task with params"
