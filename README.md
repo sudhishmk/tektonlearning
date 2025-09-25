@@ -37,7 +37,7 @@ Please install and configure the following tools on your local machine before st
 
 Complete these steps once before you begin Day 1. This will prepare your local Kubernetes cluster with Tekton.
 
-**1. Start Your Minikube Cluster**
-We need a cluster with sufficient resources. Start Minikube with the following command:
-```bash
-minikube start --memory=4g --cpus=2 --driver=docker
+**1. Start Your Local Cluster**
+**Set up a local cluster**: If you don't have one, install [Minikube](https://minikube.sigs.k8s.io/docs/start/) or [Kind](https://kind.sigs.k8s.io/docs/user/quick-start/). Start your cluster.
+    * For Minikube: `minikube start --memory 4g --cpus 2`
+    * For Kind: `kind create cluster`
