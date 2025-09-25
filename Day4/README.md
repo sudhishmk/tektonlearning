@@ -139,7 +139,7 @@ Today you'll build and run your first `Pipeline`, which will use the `git-clone`
     apiVersion: tekton.dev/v1beta1
     kind: PipelineRun
     metadata:
-      name: clone-list-pipeline-run-1
+      name: clone-list-pipeline-run-2
     spec:
       pipelineRef:
         name: git-clone-and-list-pipeline
@@ -149,7 +149,7 @@ Today you'll build and run your first `Pipeline`, which will use the `git-clone`
             claimName: tekton-shared-workspace
       params:
         - name: repo-url
-          value: [https://github.com/YOUR_USERNAME/tekton-learning.git](https://github.com/YOUR_USERNAME/tekton-learning.git) # <-- IMPORTANT: CHANGE THIS
+          value: https://github.com/YOUR_USERNAME/tektonlearning.git # <-- IMPORTANT: CHANGE THIS
     ```
     **Remember to replace `YOUR_USERNAME` with your actual GitHub username.**
 
@@ -170,7 +170,7 @@ Today you'll build and run your first `Pipeline`, which will use the `git-clone`
 
 6.  **Check the Logs**: A `PipelineRun` creates `TaskRun`s.
     * Watch the `PipelineRun`'s progress: `kubectl get pipelinerun clone-list-pipeline-run-1 -w`.
-    * Once it completes, find the Pods it created: `kubectl get pods | grep clone-list-pipeline-run-1`. You will see two Pods, one for each `Task`.
+    * Once it completes, find the Pods it created: `kubectl get pods | grep clone-list-pipeline-run-2`. You will see two Pods, one for each `Task`.
     * Check the logs of the second pod (the one for `list-cloned-files`). You should see the file structure of your Git repository!
 
 7.  **Commit Your Work**:
