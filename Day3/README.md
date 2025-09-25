@@ -63,7 +63,22 @@ Today, we'll create a reusable `git-clone` task and use it to clone the `tekton-
     mkdir -p week1/day3
     ```
 
-2.  **Create the `git-clone` Task**: Create a file at `week1/day3/task.yaml`. This `Task` will be a generic. It requires a `workspace` to clone into and takes a `repo-url` parameter.
+2.   **Create the PVC**: Create a file named `week1/day3/pvc.yaml` with this content. This requests 1Gi of storage from your cluster.
+    ```yaml
+    # week1/day2/pvc.yaml
+    apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      name: tekton-shared-workspace-2
+    spec:
+      accessModes:
+        - ReadWriteOnce # This PVC can be mounted by one node at a time
+      resources:
+        requests:
+          storage: 1Gi
+    ```
+
+3. **Create the `git-clone` Task**: Create a file at `week1/day3/task.yaml`. This `Task` will be a generic. It requires a `workspace` to clone into and takes a `repo-url` parameter.
     ```yaml
     # week1/day3/task.yaml
     apiVersion: tekton.dev/v1beta1
@@ -105,18 +120,18 @@ Today, we'll create a reusable `git-clone` task and use it to clone the `tekton-
         name: git-clone
       params:
         - name: repo-url
-          value: [https://github.com/YOUR_USERNAME/tekton-learning.git](https://github.com/YOUR_USERNAME/tekton-learning.git) # <-- IMPORTANT: CHANGE THIS
+          value: https://github.com/YOUR_USERNAME/tekton-learning.git# <-- IMPORTANT: CHANGE THIS
       workspaces:
         - name: source
           persistentVolumeClaim:
-            claimName: tekton-shared-workspace # Re-using the PVC from Day 2
+            claimName: tekton-shared-workspace-2 # Re-using the PVC from Day 2
     ```
     **Remember to replace `YOUR_USERNAME` with your actual GitHub username.**
 
 4.  **Apply and Run**:
     ```bash
-    # Ensure your PVC from day 2 still exists. If not, recreate it:
-    # kubectl apply -f week1/day2/pvc.yaml
+    # Create a new pvc
+    # kubectl apply -f week1/day3/pvc.yaml
 
     # 1. Apply the new generic Task
     kubectl apply -f week1/day3/task.yaml

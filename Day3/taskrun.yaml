@@ -8,8 +8,8 @@ spec:
     name: git-clone
   params:
     - name: repo-url
-      value: https://github.com/sudhishmk/tekton-learning.git
+      value: https://github.com/sudhishmk/tektonlearning.git # <-- IMPORTANT: CHANGE THIS
   workspaces:
     - name: source
       persistentVolumeClaim:
-        claimName: tekton-shared-workspace 
+        claimName: tekton-shared-workspace-2 # Re-using the PVC from Day 2
