@@ -1,0 +1,18 @@
+# week2/day11/pipelinerun.yaml
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  name: test-build-push-run-1
+spec:
+  pipelineRef:
+    name: test-and-build-pipeline
+  serviceAccountName: image-builder-sa # <-- CRITICAL
+  params:
+    - name: repo-url
+      value: https://github.com/sudhishmk/tekton-learning.git
+    - name: image-reference
+      value: docker.io/sudhishmk/tekton-learning:latest # <-- CRITICAL
+  workspaces:
+    - name: shared-workspace
+      persistentVolumeClaim:
+        claimName: tekton-shared-workspace

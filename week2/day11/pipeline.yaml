@@ -1,0 +1,44 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: test-and-build-pipeline
+spec:
+  params:
+    - name: repo-url
+    - name: image-reference # e.g., docker.io/your-user/tekton-learning
+  workspaces:
+    - name: shared-workspace
+
+  tasks:
+    - name: clone-repo
+      taskRef:
+        name: git-clone
+        bundle: gcr.io/tekton-releases/catalog/upstream/git-clone:0.9
+      params:
+        - name: url
+          value: $(params.repo-url)
+      workspaces:
+        - name: output
+          workspace: shared-workspace
+
+    - name: run-go-tests
+      runAfter: ["clone-repo"]
+      taskRef:
+        name: go-test-with-results
+      workspaces:
+        - name: source
+          workspace: shared-workspace
+
+    - name: build-and-push
+      runAfter: ["run-go-tests"]
+      taskRef:
+        name: kaniko
+        bundle: gcr.io/tekton-releases/catalog/upstream/kaniko:0.6
+      params:
+        - name: IMAGE
+          value: $(params.image-reference)
+      workspaces:
+        - name: source
+          workspace: shared-workspace
+        - name: dockerconfig
+          workspace: not-used # Kaniko auto-detects the SA secret

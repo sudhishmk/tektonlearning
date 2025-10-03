@@ -1,0 +1,8 @@
+# week2/day10/pipelinerun.yaml
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  name: finally-run-1
+spec:
+  pipelineRef:
+    name: robust-pipeline-with-finally
