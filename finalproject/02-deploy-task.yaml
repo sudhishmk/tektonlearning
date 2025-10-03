@@ -1,0 +1,28 @@
+# final-project/02-deploy-task.yaml
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: kubectl-apply
+spec:
+  params:
+    - name: image-reference
+    - name: manifest-path
+      default: "final-project/kubernetes/deployment.yaml"
+  workspaces:
+    - name: source
+  steps:
+    - name: update-and-apply
+      image: alpine/k8s:1.29.0 # An image with kubectl and sed
+      script: |
+        #!/bin/sh
+        set -ex
+
+        cd $(workspaces.source.path)
+        # Replace the placeholder with the real image digest from the build step
+        sed -i "s|IMAGE_PLACEHOLDER|$(params.image-reference)|g" $(params.manifest-path)
+
+        echo "--- Applying manifest ---"
+        cat $(params.manifest-path)
+        echo "-----------------------"
+
+        kubectl apply -f $(params.manifest-path)

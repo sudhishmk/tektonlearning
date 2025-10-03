@@ -1,0 +1,46 @@
+# final-project/03-pipeline.yaml
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: complete-cicd-pipeline
+spec:
+  params:
+    - name: repo-url
+    - name: image-reference
+  workspaces:
+    - name: source
+  tasks:
+    - name: clone
+      taskRef: { name: git-clone, bundle: "gcr.io/tekton-releases/catalog/upstream/git-clone:0.9" }
+      params: [{ name: url, value: $(params.repo-url) }]
+      workspaces: [{ name: output, workspace: source }]
+    - name: test
+      runAfter: ["clone"]
+      taskRef: { name: go-test-with-results }
+      workspaces: [{ name: source, workspace: source }]
+    - name: build
+      runAfter: ["test"]
+      taskRef: { name: kaniko, bundle: "gcr.io/tekton-releases/catalog/upstream/kaniko:0.6" }
+      params:
+        - name: IMAGE
+          value: $(params.image-reference)
+        - name: DOCKERFILE
+          value: week1/project/Dockerfile
+      workspaces:
+        - name: source
+          workspace: source
+    - name: deploy
+      runAfter: ["build"]
+      taskRef: { name: kubectl-apply }
+      params:
+        - name: image-reference
+          value: $(tasks.build.results.IMAGE_DIGEST) # Use the exact digest from Kaniko
+      workspaces:
+        - name: source
+          workspace: source
+  finally:
+    - name: report-status
+      taskRef: { name: echo-message }
+      params:
+        - name: message
+          value: "CI/CD Pipeline finished with status: $(tasks.status)"

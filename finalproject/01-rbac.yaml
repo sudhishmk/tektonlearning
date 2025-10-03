@@ -1,0 +1,26 @@
+# final-project/01-rbac.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: deployer-sa
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: deployer-role
+rules:
+- apiGroups: ["apps"]
+  resources: ["deployments"]
+  verbs: ["get", "list", "watch", "create", "delete", "patch", "update"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: deployer-role-binding
+subjects:
+- kind: ServiceAccount
+  name: deployer-sa
+roleRef:
+  kind: Role
+  name: deployer-role
+  apiGroup: rbac.authorization.k8s.io

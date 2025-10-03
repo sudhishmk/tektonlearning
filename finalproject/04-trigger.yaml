@@ -1,0 +1,55 @@
+# final-project/04-trigger.yaml
+apiVersion: triggers.tekton.dev/v1beta1
+kind: TriggerBinding
+metadata:
+  name: cicd-binding
+spec:
+  params:
+    - name: repo-url
+      value: $(body.repository.clone_url)
+    - name: commit-sha
+      value: $(body.head_commit.id)
+---
+apiVersion: triggers.tekton.dev/v1beta1
+kind: TriggerTemplate
+metadata:
+  name: cicd-template
+spec:
+  params:
+    - name: repo-url
+    - name: commit-sha
+  resourcetemplates:
+    - apiVersion: tekton.dev/v1beta1
+      kind: PipelineRun
+      metadata:
+        generateName: cicd-run-
+      spec:
+        pipelineRef: { name: complete-cicd-pipeline }
+        serviceAccountName: image-builder-sa # For the Kaniko task
+        params:
+          - name: repo-url
+            value: $(tt.params.repo-url)
+          - name: image-reference
+            value: docker.io/YOUR_DOCKERHUB_USERNAME/tekton-final-project:$(tt.params.commit-sha)
+        workspaces:
+        - name: source
+          persistentVolumeClaim: { claimName: tekton-shared-workspace }
+        taskRunSpecs: # Give the deploy task its own service account
+          - pipelineTaskName: deploy
+            taskServiceAccountName: deployer-sa
+---
+apiVersion: triggers.tekton.dev/v1beta1
+kind: EventListener
+metadata:
+  name: cicd-listener
+spec:
+  serviceAccountName: tekton-pipelines-controller
+  triggers:
+    - name: main-branch-push
+      interceptors:
+        - { ref: { name: "github", kind: ClusterInterceptor }, params: [{ name: "secretRef", value: { secretName: github-webhook-secret, secretKey: secretToken } }] }
+        - { ref: { name: "cel", kind: ClusterInterceptor }, params: [{ name: "filter", value: "body.ref == 'refs/heads/main'" }] }
+      bindings:
+        - ref: cicd-binding
+      template:
+        ref: cicd-template
