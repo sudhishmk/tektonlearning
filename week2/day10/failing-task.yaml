@@ -1,0 +1,12 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: intentionally-fail
+spec:
+  steps:
+    - name: fail
+      image: ubuntu
+      script: |
+        #!/bin/bash
+        echo "This task is about to fail..."
+        exit 1

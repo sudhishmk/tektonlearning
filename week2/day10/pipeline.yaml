@@ -1,0 +1,18 @@
+# week2/day10/pipeline.yaml
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: robust-pipeline-with-finally
+spec:
+  tasks:
+    - name: attempt-main-work
+      taskRef:
+        name: intentionally-fail # Our new failing task
+
+  finally:
+    - name: report-final-status
+      taskRef:
+        name: echo-message # Our reusable echo task
+      params:
+        - name: message
+          value: "🔔 Final Report: The pipeline finished with status: $(tasks.status)"
