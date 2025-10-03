@@ -1,0 +1,33 @@
+# week2/day13/event-listener.yaml
+apiVersion: triggers.tekton.dev/v1beta1
+kind: EventListener
+metadata:
+  name: github-listener-filtered # New name
+spec:
+  serviceAccountName: tekton-pipelines-controller
+  triggers:
+    - name: github-trigger
+      interceptors:
+        # 1. First interceptor authenticates
+        - name: "validate-signature"
+          ref:
+            name: "github"
+            kind: ClusterInterceptor
+          params:
+            - name: "secretRef"
+              value:
+                secretName: github-webhook-secret
+                secretKey: secretToken
+
+        # 2. Second interceptor filters the payload
+        - name: "filter-main-branch"
+          ref:
+            name: "cel"
+            kind: ClusterInterceptor
+          params:
+            - name: "filter"
+              value: "body.ref == 'refs/heads/main'"
+      bindings:
+        - ref: github-push-binding
+      template:
+        ref: clone-pipeline-template

@@ -1,0 +1,16 @@
+# week2/day14/pipeline.yaml
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: pipeline-with-long-task
+spec:
+  tasks:
+    - name: sleep-task
+      taskSpec:
+        steps:
+          - name: sleeper
+            image: ubuntu
+            script: |
+              echo "Starting to sleep for 20 seconds."
+              sleep 20
+              echo "Finished sleeping."

@@ -1,0 +1,10 @@
+# week2/day14/pipelinerun.yaml
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  name: timeout-run-example
+spec:
+  pipelineRef:
+    name: pipeline-with-long-task
+  timeouts:
+    pipeline: "10s" # 10 seconds is less than the 20 second sleep
