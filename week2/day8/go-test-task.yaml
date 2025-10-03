@@ -1,0 +1,21 @@
+# week2/day8/go-test-task.yaml
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: go-test-with-results # Give it a new name
+spec:
+  workspaces:
+    - name: source
+  results: # <-- Add this results section
+    - name: status
+      description: "The status of the tests (passed/failed)."
+  steps:
+    - name: test
+      image: golang:1.22
+      script: |
+        #!/bin/sh
+        set -e
+        cd $(workspaces.source.path)/week1/project
+        go test -v ./...
+        # If the test command above succeeds, we write "passed"
+        echo -n "passed" > $(results.status.path)

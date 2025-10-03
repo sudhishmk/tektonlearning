@@ -1,0 +1,36 @@
+Act as a Tekton Pipeline expert. Your task is to generate the complete YAML manifest for a Tekton CI/CD pipeline.
+
+The pipeline must perform the following sequence of operations:
+1. Clone a Git repository.
+2. Build a container image using the Dockerfile in the repository.
+3. Push the container image to a specified image registry.
+4. Deploy the application to a Kubernetes cluster by applying a manifest.
+
+### Requirements & Constraints
+
+- **Source Code:**
+  - Git Repository URL: `[e.g., https://github.com/my-org/my-app.git]`
+  - Git Revision: `[e.g., main or a specific branch/commit]`
+
+- **Build Process:**
+  - Use the `buildah` Task from artifact Hub to build the image.
+  - The path to the Dockerfile is `[e.g., ./Dockerfile]`.
+  - The built image should be tagged with the git commit SHA.
+
+- **Image Registry:**
+  - Push the image to: `[e.g., gcr.io/my-project/my-app]`
+  - The pipeline will need credentials for this registry. Assume a Secret named `[e.g., docker-credentials]` is available.
+
+- **Deployment:**
+  - Use the `kubernetes-actions` Task from Tekton artifact Hub.
+  - The action is `kubectl apply -f [path/to/kubernetes/manifest.yaml]`.
+  - The pipeline needs access to the cluster. Assume a Secret named `[e.g., kube-credentials]` is available for authentication.
+
+### Output Format
+
+- Generate a single YAML file containing all necessary resources.
+- The output should include the definitions for:
+  1. A `Pipeline` resource named `[e.g., my-app-ci-cd-pipeline]`.
+  2. Any necessary `PipelineResources` or `Workspaces`.
+  3. A sample `PipelineRun` to trigger the pipeline with example parameters (e.g., git-url, image-repo).
+- Add comments in the YAML to explain each Task and parameter.

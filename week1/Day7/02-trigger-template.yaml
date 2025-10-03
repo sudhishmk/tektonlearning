@@ -1,0 +1,22 @@
+apiVersion: triggers.tekton.dev/v1beta1
+kind: TriggerTemplate
+metadata:
+  name: clone-pipeline-template
+spec:
+  params:
+    - name: git-repo-url
+  resourcetemplates:
+    - apiVersion: tekton.dev/v1beta1
+      kind: PipelineRun
+      metadata:
+        generateName: clone-bundle-run-
+      spec:
+        pipelineRef:
+          name: git-clone-bundle-pipeline # Pipeline from Day 6
+        params:
+          - name: repo-url-from-pipeline
+            value: $(tt.params.git-repo-url)
+        workspaces:
+        - name: shared-data
+          persistentVolumeClaim:
+            claimName: tekton-shared-workspace

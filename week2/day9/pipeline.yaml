@@ -1,0 +1,45 @@
+# week2/day9/pipeline.yaml
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: ci-pipeline-with-matrix
+spec:
+  params:
+    - name: repo-url
+      type: string
+  workspaces:
+    - name: shared-workspace
+
+  tasks:
+    - name: clone-repo
+      taskRef:
+        name: git-clone
+        bundle: gcr.io/tekton-releases/catalog/upstream/git-clone:0.9
+      params:
+        - name: url
+          value: $(params.repo-url)
+      workspaces:
+        - name: output
+          workspace: shared-workspace
+
+    - name: run-go-tests
+      runAfter: ["clone-repo"]
+      taskRef:
+        name: go-test-with-results # Task from Day 8
+      workspaces:
+        - name: source
+          workspace: shared-workspace
+
+    - name: parallel-deploys
+      runAfter: ["run-go-tests"]
+      taskRef:
+        name: echo-message # Generic echo task
+      matrix: # <-- The fan-out part!
+        params:
+          - name: environment
+            value: ["staging", "qa-testing"]
+          - name: region
+            value: ["us-east-1", "eu-west-1"]
+      params: # Values passed to each instance of the echo-message task
+        - name: message
+          value: "🚀 Deploying to $(params.environment) in region $(params.region)"

@@ -1,0 +1,43 @@
+# week2/day8/pipeline.yaml
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: ci-pipeline-with-conditions
+spec:
+  params:
+    - name: repo-url
+      type: string
+  workspaces:
+    - name: shared-workspace
+
+  tasks:
+    - name: clone-repo
+      taskRef:
+        name: git-clone
+        bundle: gcr.io/tekton-releases/catalog/upstream/git-clone:0.9
+      params:
+        - name: url
+          value: $(params.repo-url)
+      workspaces:
+        - name: output
+          workspace: shared-workspace
+
+    - name: run-go-tests
+      runAfter: ["clone-repo"]
+      taskRef:
+        name: go-test-with-results # Reference our new task
+      workspaces:
+        - name: source
+          workspace: shared-workspace
+
+    - name: report-success
+      runAfter: ["run-go-tests"]
+      when: # <-- The conditional part!
+        - input: "$(tasks.run-go-tests.results.status)"
+          operator: in
+          values: ["passed"]
+      taskRef:
+        name: echo-message # Using the generic echo task from last week
+      params:
+        - name: message
+          value: "✅ All tests passed successfully!"

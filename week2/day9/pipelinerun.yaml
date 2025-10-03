@@ -1,0 +1,15 @@
+# week2/day9/pipelinerun.yaml
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  name: matrix-ci-run-1
+spec:
+  pipelineRef:
+    name: ci-pipeline-with-matrix
+  params:
+    - name: repo-url
+      value: https://github.com/sudhishmk/tekton-learning.git # <-- IMPORTANT: CHANGE THIS
+  workspaces:
+    - name: shared-workspace
+      persistentVolumeClaim:
+        claimName: tekton-shared-workspace

@@ -1,0 +1,12 @@
+apiVersion: triggers.tekton.dev/v1beta1
+kind: EventListener
+metadata:
+  name: github-listener
+spec:
+  serviceAccountName: tekton-pipelines-controller # Default SA
+  triggers:
+    - name: github-trigger
+      bindings:
+        - ref: github-push-binding
+      template:
+        ref: clone-pipeline-template

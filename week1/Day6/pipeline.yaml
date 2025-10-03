@@ -1,0 +1,38 @@
+# week1/day6/pipeline.yaml
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: git-clone-bundle-pipeline
+spec:
+  workspaces:
+    - name: shared-data
+  params:
+    - name: repo-url-from-pipeline
+      type: string
+  tasks:
+    - name: fetch-repo-from-hub
+      taskRef:
+        name: git-clone # The task name inside the bundle
+        bundle: gcr.io/tekton-releases/catalog/upstream/git-clone:0.9 # OCI Image Path
+      workspaces:
+        - name: output # <-- The bundle's task expects this name
+          workspace: shared-data
+      params:
+        - name: url # <-- The bundle's task expects this name
+          value: $(params.repo-url-from-pipeline)
+
+    - name: find-commit-id
+      runAfter: ["fetch-repo-from-hub"]
+      taskRef:
+        name: get-commit-sha # Your own task from Day 5
+      workspaces:
+        - name: source # Your task expects this name
+          workspace: shared-data
+
+    - name: report-commit-id
+      runAfter: ["find-commit-id"]
+      taskRef:
+        name: echo-message # Your own task from Day 5
+      params:
+        - name: message
+          value: "Cloned with Hub Task and found commit: $(tasks.find-commit-id.results.commit-sha)"
