@@ -50,4 +50,4 @@ It's time to integrate everything. Your project is to build a basic CI pipeline 
 
 Apply and run everything. When it succeeds, you'll have an end-to-end CI pipeline ready for automation!
 
-[Go to Day 8](../week2/day8/README.md)
+[Go to Day 8](../../week2/day8/README.md)
