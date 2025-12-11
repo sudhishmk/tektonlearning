@@ -178,3 +178,5 @@ Today, you will add a real image build-and-push step to your CI pipeline.
     git commit -m "Day 11: Add Kaniko task to build and push images"
     git push origin main
     ```
+
+[Go to Day 12](../day12/README.md)
