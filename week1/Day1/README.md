@@ -95,4 +95,4 @@ Today, you'll set up your environment and run your first `Task`. This will form 
 
 You have now successfully defined and executed a piece of work using Tekton's core components!
 
-[Go to Day 2](week1/Day2/README.md)
+[Go to Day 2](Day2/README.md)
