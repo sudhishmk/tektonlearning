@@ -188,3 +188,4 @@ Today, you'll modify yesterday's pipeline. You'll add a `Task` to get the real c
     git push origin main
     ```
 
+[Go to Day 6](../Day6/README.md)
