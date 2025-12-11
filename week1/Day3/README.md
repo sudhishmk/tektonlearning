@@ -152,5 +152,7 @@ Today, we'll create a reusable `git-clone` task and use it to clone the `tekton-
     git commit -m "Day 3: Creating a reusable git-clone task with params"
     git push origin main
     ```
+
+    [Go to Day 4](../Day4/README.md)
     
     
