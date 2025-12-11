@@ -35,4 +35,5 @@ tasks:
         value: $(params.repo-url)
 ```
 
+[Go to Day 7](../Day7/README.md)
 
