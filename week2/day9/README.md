@@ -164,3 +164,5 @@ Today, you'll modify your CI pipeline to simulate parallel deployments to multip
     git commit -m "Day 9: Add Matrix for parallel task execution"
     git push origin main
     ```
+
+[Go to Day 10](../day10/README.md)
