@@ -117,3 +117,5 @@ Today you will apply a timeout to a pipeline and watch it fail as expected.
     git commit -m "Day 14: Add and test PipelineRun timeouts"
     git push origin main
     ```
+
+[Go to Week 2 Project](../project/README.md)
