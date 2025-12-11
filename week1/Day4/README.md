@@ -179,3 +179,5 @@ Today you'll build and run your first `Pipeline`, which will use the `git-clone`
     git commit -m "Day 4: Creating a multi-task Pipeline"
     git push origin main
     ```
+
+[Go to Day 5](../Day5/README.md)
