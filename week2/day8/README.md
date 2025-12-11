@@ -190,3 +190,5 @@ Today, you'll enhance your Week 1 project. You'll modify the `go-test` task to p
     git commit -m "Day 8: Add WhenExpressions for conditional execution"
     git push origin main
     ```
+
+[Go to Day 9](../day9/README.md)
