@@ -148,4 +148,5 @@ Today, you'll build a pipeline that intentionally fails but still performs a cle
     git push origin main
     ```
 
+[Go to Day 11](../day11/README.md)
 
