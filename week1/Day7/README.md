@@ -154,6 +154,7 @@ Today's setup is more involved as we're installing a new component and simulatin
     git commit -m "Day 7: Add Tekton Triggers to automate PipelineRuns"
     git push origin main
     ```
-    
+
+[Go to Week 1 Project](../project/README.md)
 
 
