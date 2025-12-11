@@ -35,3 +35,6 @@ Your goal is to combine the key concepts from this week into a single, advanced 
     * Second, create a new `PipelineRun` where you explicitly set the `is-production-deploy` param to `"true"`. Observe that both deployment tasks now run.
 
 Completing this project demonstrates mastery over the advanced control flow and security features of Tekton.
+
+
+[Go to Troubleshooting Guide](../../TroubleshootingGuide.md)
