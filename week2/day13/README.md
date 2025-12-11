@@ -175,3 +175,5 @@ Today you'll enhance the secure `EventListener` from Day 12, adding a `cel` inte
     git commit -m "Day 13: Add CEL Interceptor to filter triggers"
     git push origin main
     ```
+
+[Go to Day 14](../day14/README.md)
